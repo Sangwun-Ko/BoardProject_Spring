@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="memberMapper">
+	<select id="getEmailById" resultType="java.lang.String">
+		SELECT email FROM member WHERE idx=#{idx}
+	</select>
+	<select id="getPwByEmail" resultType="java.lang.String">
+		SELECT pw FROM member WHERE email=#{email}
+	</select>
+	<select id="getMemberInfo" resultType="com.sw.dto.MemberDto">
+		SELECT * FROM member WHERE email=#{email} AND pw=#{pw}
+	</select>
+</mapper>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="diaryMapper">
+ <resultMap id="diaryResultMap" type="com.sw.dto.DiaryDto">
+        <!-- Result mappings for each column -->
+        <result column="diary_date" property="diary_date"/>		<!-- column SQL컬럼, property Dto field -->
+        <result column="main_img" property="main_img"/>
+        <result column="title" property="title"/>
+        <result column="dno" property="dno"/>
+        <result column="idx" property="idx"/>
+        <result column="nick_name" property="nick_name"/>
+        <result column="view_cnt" property="view_cnt"/>
+        <result column="likecnt" property="likecnt"/>
+        <result column="cmtcnt" property="cmtcnt"/>
+    </resultMap>
+	<select id="getDiaryList" resultMap="diaryResultMap">
+		SELECT d.diary_date,d.main_img,d.title,d.dno,d.idx,m.nick_name,d.view_cnt,(SELECT COUNT(*) FROM diary_like WHERE dno=d.dno) AS "likecnt",(SELECT COUNT(*) FROM diary_comment WHERE dno=d.dno) AS "cmtcnt"
+		FROM diary d, member m
+		WHERE d.idx=m.idx
+		ORDER BY d.dno DESC
+	</select>
+	<insert	id="insertDiary">
+		INSERT INTO diary(dno,title,content,idx) VALUES(seq_dno.nextval,#{title},#{content},#{idx})
+	</insert>
+	<select id="getDiaryDetail" resultType="com.sw.dto.DiaryDto">
+		SELECT * FROM diary WHERE dno=#{dno}
+	</select>
+	<select id="checkDiaryLike" resultType="java.lang.Boolean">
+		SELECT * FROM diary_like WHERE idx=#{idx} AND dno=#{dno}
+	</select>
+	<insert id="clickLikeButton">
+		INSERT INTO diary_like(idx, dno) VALUES(#{idx}, #{dno})
+	</insert>
+	<delete id="clickLikeDelete">
+		DELETE FROM diary_like WHERE idx=#{idx} AND dno=#{dno}
+	</delete>
+
+</mapper>

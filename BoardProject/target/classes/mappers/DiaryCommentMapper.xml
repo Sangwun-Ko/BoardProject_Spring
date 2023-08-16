@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="diaryCommentMapper">
+        <!-- Result mappings for each column -->
+	<select id="getCommentByDno" resultType="com.sw.dto.DiaryCommentDto">
+		SELECT * FROM diary_comment WHERE dno=#{dno}
+	</select>
+	
+	<insert id="addDiaryComment">
+		INSERT INTO diary_comment(cno,diary_cmt,idx,dno) VALUES (seq_cno.nextval,#{diary_cmt},#{idx},#{dno})
+	</insert>
+	
+	<update id="updateDiaryComment">
+		UPDATE diary_comment SET diary_cmt = #{diary_cmt} WHERE cno = #{cno}
+	</update>
+	<delete id="deleteDiaryComment">
+		DELETE FROM diary_comment WHERE cno=#{cno}
+	</delete>
+</mapper>
